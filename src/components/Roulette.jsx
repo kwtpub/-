@@ -5,13 +5,14 @@ const CURRENCY = '₽'
 
 export default function Roulette() {
   const amounts = useMemo(() => [5, 10, 20, 50, 100, 200, 500, 1000, 1000000], [])
-  const maxValue = useMemo(() => Math.max(...amounts), [amounts])
+  const maxValue = 1000000 // Всегда миллион
   const maxIndex = useMemo(() => amounts.indexOf(maxValue), [amounts, maxValue])
 
   const [isSpinning, setIsSpinning] = useState(false)
   const [rotation, setRotation] = useState(0)
   const [result, setResult] = useState(null)
   const [showNotification, setShowNotification] = useState(false)
+  const [showPushNotification, setShowPushNotification] = useState(false)
   const wheelRef = useRef(null)
 
   const sectorAngle = 360 / amounts.length
@@ -34,6 +35,12 @@ export default function Roulette() {
     
     oscillator.start(audioContext.currentTime)
     oscillator.stop(audioContext.currentTime + 0.5)
+  }
+
+  function handleWithdraw() {
+    setShowPushNotification(true)
+    // Автоматически скрываем через 5 секунд
+    setTimeout(() => setShowPushNotification(false), 5000)
   }
 
   function getTargetRotation() {
@@ -82,14 +89,12 @@ export default function Roulette() {
       setIsSpinning(false)
       setResult(maxValue)
       
-      // Показываем уведомление для миллиона
-      if (maxValue === 1000000) {
-        setShowNotification(true)
-        // Звуковой эффект
-        playWinSound()
-        // Автоматически скрываем через 4 секунды
-        setTimeout(() => setShowNotification(false), 4000)
-      }
+      // Всегда показываем уведомление (так как всегда миллион)
+      setShowNotification(true)
+      // Звуковой эффект
+      playWinSound()
+      // Автоматически скрываем через 4 секунды
+      setTimeout(() => setShowNotification(false), 4000)
     }, seconds * 1000 + 50)
   }
 
@@ -97,7 +102,7 @@ export default function Roulette() {
     <div className="roulette-root">
       <div className="header">
         <h1>Ультра рулетка</h1>
-        <p className="sub">Выпадает гарантированный максимум: {maxValue.toLocaleString('ru-RU')} {CURRENCY}</p>
+        <p className="sub">Выпадает гарантированный миллион: {maxValue.toLocaleString('ru-RU')} {CURRENCY}</p>
       </div>
 
       <div className="roulette">
@@ -130,6 +135,9 @@ export default function Roulette() {
           <button className="btn" onClick={handleSpin} disabled={isSpinning}>
             {isSpinning ? 'Крутится…' : 'Крутить'}
           </button>
+          <button className="btn btn-withdraw" onClick={handleWithdraw}>
+            Вывод
+          </button>
           {result != null && (
             <div className="result" role="status">
               Выпало: <b>{result.toLocaleString('ru-RU')} {CURRENCY}</b>
@@ -148,6 +156,27 @@ export default function Roulette() {
             </div>
             <div className="notification-subtitle">
               Это максимальный выигрыш!
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPushNotification && (
+        <div className="push-notification">
+          <div className="push-content">
+            <div className="push-header">
+              <div className="push-app-icon">
+                <div className="push-icon-bg">900</div>
+              </div>
+              <div className="push-app-info">
+                <div className="push-app-name">MIR-4212</div>
+                <div className="push-time">now</div>
+              </div>
+            </div>
+            <div className="push-body">
+              <div className="push-title">Зачислен перевод 1 000 000р</div>
+              <div className="push-subtitle">Альфа-Банк</div>
+              <div className="push-balance">Баланс: 1 000 134р.</div>
             </div>
           </div>
         </div>

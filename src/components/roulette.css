@@ -125,6 +125,14 @@
   transition: transform 0.05s ease, background 0.2s ease;
 }
 
+.btn-withdraw {
+  background: #059669;
+}
+
+.btn-withdraw:hover {
+  background: #047857;
+}
+
 .btn:disabled {
   background: #1f3e8a;
   cursor: default;
@@ -262,6 +270,109 @@
   }
   60% {
     transform: translateY(-5px);
+  }
+}
+
+/* Push-уведомление в стиле iOS */
+.push-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 350px;
+  width: calc(100% - 40px);
+}
+
+.push-content {
+  background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.push-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.push-app-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.push-icon-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #007aff, #0051d5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.push-app-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.push-app-name {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.push-time {
+  color: #8e8e93;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.push-body {
+  margin-left: 44px;
+}
+
+.push-title {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.push-subtitle {
+  color: #8e8e93;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+
+.push-balance {
+  color: #8e8e93;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }
 
